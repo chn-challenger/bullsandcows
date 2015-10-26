@@ -1,5 +1,4 @@
-require "spec_helper"
-require "./player"
+require "./lib/bulls_cows/player"
 
 describe Player do
 
