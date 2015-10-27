@@ -11,8 +11,9 @@ class Game
   end
 
   def make_move(number)
+    result = compare_choices(number, opponent.secret_number)
     turn.add_guess(number)
-    result = compare_choices(number,opponent.secret_number)
+    turn.add_result(result)
     switch_turns
     result
   end
