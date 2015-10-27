@@ -1,0 +1,18 @@
+.heading {
+  background-color: lightblue;
+  height: 10%;
+  width: 45%;
+  display: inline-block;
+  padding: 20px;
+  border: solid 2px white
+}
+
+
+.middle {
+  background-color: lightblue;
+  height: 70%;
+  width: 45%;
+  display: inline-block;
+  padding: 20px;
+  border: solid 2px white
+}
