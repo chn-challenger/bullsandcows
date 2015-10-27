@@ -5,7 +5,7 @@ describe Game do
   let(:player1)  { double(:player1, secret_number: 4321) }
   let(:player2)  { double(:player2, secret_number: 1234) }
   let(:game)     { described_class.new(player1, player2) }
-  
+
   context 'Game starts' do
 
     context 'has 2 players' do
@@ -26,12 +26,12 @@ describe Game do
       end
 
       it 'return the result after player 1\'s turn' do
-        result = { bulls: 0, cows: 2}
+        result = { bulls: 0, cows: 2 }
         expect(game.make_move(4356)).to eq result
       end
 
       it 'return the result after player 2\'s turn' do
-        result = { bulls: 2, cows: 0}
+        result = { bulls: 2, cows: 0 }
         game.make_move(1234)
         expect(game.make_move(4356)).to eq result
       end
