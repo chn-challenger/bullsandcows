@@ -1,4 +1,4 @@
-require "./lib/rules"
+require "./lib/bulls_cows/rules"
 
 class Game
 
@@ -16,14 +16,14 @@ class Game
     result
   end
 
-  def opponent
-    turn == player_1 ? player_2 : player_1
-  end
-
   private
 
   def switch_turns
     @turn = opponent
+  end
+
+  def opponent
+    turn == player_1 ? player_2 : player_1
   end
 
 end
