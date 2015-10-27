@@ -1,0 +1,11 @@
+<% if $invites[current_user.user_name] == nil %>
+  <form action='/games/challenge' method='post'>
+    <input type='text' name='challengee'>
+    <input type='submit' value='Send challenge'>
+  </form>
+
+<% else %>
+  <%= $invites[current_user.user_name] %> has challenged you to play a game. Would you accept?
+  <%= button_to 'Accept challenge', '/games/accept_challenge', method: :post %>
+<% end %>
+<!-- <%= link_to 'Start game', '/games/secret' %> -->
