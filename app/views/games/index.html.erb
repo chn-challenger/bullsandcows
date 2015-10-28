@@ -1,3 +1,31 @@
+<script>
+ $(function() {
+   var pusher = new Pusher('05353e523f10cfd5d040');
+   var channel = pusher.subscribe('user_<%= current_user.id %>_channel');
+   channel.bind('challenge', function(data) {
+     // $.post('/games/accept_challenge', {challenger: data.challenger, challengee: data.challengee})
+     // var r = confirm("Would you accept a challenge from " + data.challenger.user_name + "?");
+     // if (r) {
+     //   $.post('/set_secret', {challenger: data.challenger, challengee: data.challengee})
+     // }
+    //  window.location.href = "http://localhost:3000/accept"
+    // var challenger = data.challenger.user_name
+    // var challengee = data.challengee.user_name
+    // var message = 'Hi ' + challengee + ", " + challenger + " has challenged you to a game."
+    // alert(message)
+    location.reload();
+   })
+   channel.bind('secret', function() {
+     window.location.href = "http://localhost:3000/games/set_secret"
+   })
+  //  $('#send-challenge').on('click', function(event) {
+  //    event.preventDefault();
+  //    var input = $('#challengee').val()
+  //    $.post('/games/challenge', {challengee: input, challenger: '<%= current_user %>'})
+  //  });
+ });
+</script>
+
 <% if $invites[current_user.user_name] == nil %>
   Other users currently online:
   <ol>
@@ -10,8 +38,8 @@
     <% end %>
   </ol><br/>
   <form action='/games/challenge' method='post'>
-    <input type='text' name='challengee'>
-    <input type='submit' value='Send challenge'>
+    <input id="challengee" type='text' name='challengee'>
+    <input id="send_challengee" type='submit' value='Send challenge'>
   </form>
 
 <% else %>
