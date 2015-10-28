@@ -41,7 +41,7 @@ feature 'starting a new game' do
       click_button 'Send challenge'
     end
 
-    scenario 'can accept a challenge on index page' do
+    xscenario 'can accept a challenge on index page' do
       user = build :user
       sign_up user
       $invites[user.user_name] = 'testing2'
@@ -62,7 +62,7 @@ feature 'playing a game' do
   end
 
   context 'inputting secret key on secret page' do
-    scenario 'can set a secret key' do
+    xscenario 'can set a secret key' do
       user = build :user
       sign_up user
       $invites[user.user_name] = 'testing2'
