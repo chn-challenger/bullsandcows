@@ -7,12 +7,14 @@
   <%= csrf_meta_tags %>
   <script src="//cdnjs.buttflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
   <script src="//js.pusher.com/3.0/pusher.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 </head>
 <body>
 <%= render "layouts/navbar" %>
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p>
+<div class="container">
 <%= yield %>
-
+</div>
 </body>
 </html>
