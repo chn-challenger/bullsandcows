@@ -15,17 +15,26 @@ feature 'starting a new game' do
   end
 
   context 'clicking "Enter game" link on homepage' do
-    scenario 'can challenge a user' do
+    scenario 'can see a list of other users currently online on index page' do
+      user = build :user
+      user2 = create :user, email: 'testing2@testing.com', user_name: 'testing2'
+      $users << user2.user_name
+      sign_up user
+      click_link 'Enter game'
+      expect(page).to have_content user2.user_name
+      expect(current_path).to eq '/games/index'
+    end
+
+    scenario 'can challenge a user on index page' do
       user = build :user
       sign_up user
       click_link 'Enter game'
-      expect(current_path).to eq '/games/index'
       user2 = create :user, email: 'testing2@testing.com', user_name: 'testing2'
       fill_in 'challengee', with: user2.user_name
       click_button 'Send challenge'
     end
 
-    scenario 'can accept a challenge' do
+    scenario 'can accept a challenge on index page' do
       user = build :user
       sign_up user
       $invites[user.user_name] = 'testing2'
@@ -64,9 +73,8 @@ feature 'playing a game' do
     xscenario 'can submit guess' do
       user = build :user
       sign_up user
-      $invites[user.user_name] = 'testing2'
+      $invites['testing2'] = user.user_name
       click_link 'Enter game'
-      click_button 'Accept challenge'
       fill_in 'key', with: '1357'
       click_button 'Enter secret key'
       fill_in 'guess', with: '1357'
