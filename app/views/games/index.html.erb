@@ -15,13 +15,13 @@
  });
 </script>
 
-<% if $invites[current_user.user_name] == nil %>
-  Other users currently online:
+<% if session[:challenged_user] == nil %>
+  Other users currently in the lobby:
   <ol>
-    <% $users.each do |user| %>
-      <% if user != current_user.user_name %>
+    <% @lobbyusers.each do |lobbyuser| %>
+      <% if lobbyuser.username != current_user.user_name %>
         <li>
-          <%= user %>
+          <%= lobbyuser.username %>
         </li>
       <% end %>
     <% end %>
@@ -32,6 +32,6 @@
   </form>
 
 <% else %>
-  <p><strong><em><%= $invites[current_user.user_name] %></em></strong> has challenged you to play a game. Would you accept?</p>
+  <p><strong><em><%= hello %></em></strong> has challenged you to play a game. Would you accept?</p>
   <%= button_to 'Accept challenge', '/games/accept_challenge', method: :post %>
 <% end %>

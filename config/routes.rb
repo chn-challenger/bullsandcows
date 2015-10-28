@@ -12,5 +12,7 @@ Rails.application.routes.draw do
   resource :games
 
   get '/accept' => 'games#accept'
-
+  get '/test' => 'games#test'
+  get '/test1' => 'games#test1'
+  get '/test2' => 'games#test2'
 end

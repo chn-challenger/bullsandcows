@@ -10,10 +10,10 @@ class GamesController < ApplicationController
   end
 
   def index
-    setup_invites
-    setup_users
-    if new_visitor?
-      $users << current_user.user_name
+    if Lobbyuser.find_by(username: current_user.user_name)
+      @lobbyusers = Lobbyuser.all
+    else
+      Lobbyuser.create(username: current_user.user_name)
       Pusher.trigger("users", 'refresh_users', {})
     end
   end
@@ -90,6 +90,47 @@ class GamesController < ApplicationController
 
   def accept
 
+  end
+
+  def test
+    Lobbyuser.create(username: "joe123")
+    # Lobbyuser.create(username: "helloworld")
+    # @view = Lobbyuser.find(1).username
+    # @user = Lobbyuser.find_by username: 'Joe123'
+
+    # @class = @view.class
+    # test1 = Bullsandcowsgame.new
+    # game = Game.new(Player.new('Joe'),Player.new('Jongmin'))
+    # game.player_1.set_secret_number 1234
+    # test1.state = game
+    # test1.save
+
+    # current_game = Bullsandcowsgame.find(1).state
+    # @view = current_game.class.to_s
+    # current_game.player_1.set_secret_number 1234
+    # current_game.player_2.set_secret_number 4567
+    # current_game.make_move(4762)
+    # current_game.make_move(1236)
+    # current_game.make_move(1298)
+    # update_game = Bullsandcowsgame.find(1)
+    # update_game.state = current_game
+    # update_game.save
+    # view_game = Bullsandcowsgame.find(1).state
+    # @view = Bullsandcowsgame.find(1).state.player_1.results
+    # Bullsandcowsgame.find(1).state.player_1.set_secret_number 1234
+    # session[:smessage] = "We love Ruby!"
+  end
+
+  def test1
+    if Lobbyuser.find_by(username: current_user.user_name)
+      @view = "YES YES YES"
+      # session[:current_users] << current_user.user_name
+      # Pusher.trigger("users", 'refresh_users', {})
+    end
+  end
+
+  def test2
+    # @view = session[:smessage]
   end
 
 end
