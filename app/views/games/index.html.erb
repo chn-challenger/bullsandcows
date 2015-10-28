@@ -1,10 +1,20 @@
 <% if $invites[current_user.user_name] == nil %>
+  Other users currently online:
+  <ol>
+    <% $users.each do |user| %>
+      <% if user != current_user.user_name %>
+        <li>
+          <%= user %>
+        </li>
+      <% end %>
+    <% end %>
+  </ol><br/>
   <form action='/games/challenge' method='post'>
     <input type='text' name='challengee'>
     <input type='submit' value='Send challenge'>
   </form>
 
 <% else %>
-  <%= $invites[current_user.user_name] %> has challenged you to play a game. Would you accept?
+  <p><strong><em><%= $invites[current_user.user_name] %></em></strong> has challenged you to play a game. Would you accept?</p>
   <%= button_to 'Accept challenge', '/games/accept_challenge', method: :post %>
 <% end %>

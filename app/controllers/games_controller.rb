@@ -2,14 +2,17 @@ require './lib/bulls_cows/player'
 require './lib/bulls_cows/game'
 
 class GamesController < ApplicationController
+  include GamesHelper
   protect_from_forgery except: [:challenge, :save_secret]
 
   def homepage
   end
 
   def index
+    setup_users
+    $users << current_user.user_name if new_visitor?
     setup_invites
-    redirect_to '/games/set_secret' if $game != nil
+    redirect_to '/games/set_secret' if $game
   end
 
   def challenge
@@ -41,13 +44,6 @@ class GamesController < ApplicationController
 
   def guess
     @result = $game.make_move params[:guess]
-    @turn = $game.turn
     redirect_to '/games/new'
-  end
-
-  private
-
-  def setup_invites
-    $invites ||= {}
   end
 end

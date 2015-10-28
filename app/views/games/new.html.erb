@@ -40,7 +40,7 @@
         </div>
       </div>
 
-      <% if @turn == current_user.user_name %>
+      <% if current_user_turn? %>
         <div class="row" style="height:100%;background-color:lightgrey;border-top: solid 5px white;padding-left:20px;padding-top:2px">
           <form action='/games/guess' method='post'>
             <h4>
