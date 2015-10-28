@@ -22,4 +22,8 @@ module GamesHelper
   def current_user_turn?
     $game.turn.username == current_user.user_name
   end
+
+  def winner?
+    @result.values[0] == 4
+  end
 end

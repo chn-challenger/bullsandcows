@@ -44,6 +44,9 @@ class GamesController < ApplicationController
 
   def guess
     @result = $game.make_move params[:guess]
-    redirect_to '/games/new'
+    winner? ? redirect_to('/games/end') : redirect_to('/games/new')
+  end
+
+  def end
   end
 end

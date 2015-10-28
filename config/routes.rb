@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   get 'games/set_secret' => 'games#set_secret'
   post 'games/save_secret' => 'games#save_secret'
   post 'games/guess' => 'games#guess'
+  get 'games/end' => 'games#end'
   resource :games
 end
