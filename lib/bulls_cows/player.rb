@@ -1,18 +1,23 @@
 class Player
 
-  attr_reader :name, :secret_number, :picked_numbers
+  attr_reader :username, :secret_number, :guesses, :results
 
-  def initialize(name = 'Player')
-    @name = name
-    @picked_numbers = []
+  def initialize(username = 'Player')
+    @username = username
+    @guesses = Array.new
+    @results = Array.new
   end
 
   def set_secret_number(number)
     @secret_number = number
   end
 
-  def pick_number(number)
-    picked_numbers << number
+  def add_guess(number)
+    guesses << number
+  end
+
+  def add_result(result)
+    results << result
   end
 
 end

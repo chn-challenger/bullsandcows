@@ -4,13 +4,18 @@ describe Player do
 
     context "at the start" do
 
+      let(:player) { described_class.new('Zhivko') }
+
       it "initialize with a default name when not provided one" do
-        expect(subject.name).to eq "Player"
+        expect(subject.username).to eq "Player"
       end
 
       it "initialize with a name provided" do
-        player = Player.new('Zhivko')
-        expect(player.name).to eq "Zhivko"
+        expect(player.username).to eq "Zhivko"
+      end
+
+      it "initialize with an empty array of guesses" do
+        expect(player.guesses).to eq []
       end
 
     end
@@ -24,9 +29,9 @@ describe Player do
         expect(subject.secret_number).to eq number
       end
 
-      it "#pick_number" do
-        subject.pick_number(number)
-        expect(subject.picked_numbers).to  eq [number]
+      it "#add_guess" do
+        subject.add_guess(number)
+        expect(subject.guesses).to eq [number]
       end
 
     end
