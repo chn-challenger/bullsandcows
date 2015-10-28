@@ -1,0 +1,2 @@
+<%= $invites[current_user.user_name] %> has challenged you to play a game. Would you accept?
+<%= button_to 'Accept challenge', '/games/accept_challenge', class: 'accept_challenge', method: :post %>
