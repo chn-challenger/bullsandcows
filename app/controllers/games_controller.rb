@@ -4,7 +4,7 @@ require './lib/bulls_cows/game'
 class GamesController < ApplicationController
   include GamesHelper
   protect_from_forgery except: [:challenge, :save_secret]
-  before_action :authenticate_user!, except: [:homepage]
+  # before_action :authenticate_user!, except: [:homepage]
 
   def homepage
   end
