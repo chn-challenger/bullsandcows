@@ -10,4 +10,7 @@ Rails.application.routes.draw do
   post 'games/guess' => 'games#guess'
   get 'games/end' => 'games#end'
   resource :games
+
+  get '/accept' => 'games#accept'
+
 end
