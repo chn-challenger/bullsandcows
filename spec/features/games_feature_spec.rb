@@ -14,7 +14,14 @@ feature 'starting a new game' do
     end
   end
 
-  context 'clicking "Enter game" link on homepage' do
+  context 'entering game from homepage' do
+    scenario 'user must be signed in to enter game' do
+      visit '/'
+      click_link 'Enter game'
+      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(current_path).to eq '/users/sign_in'
+    end
+
     scenario 'can see a list of other users currently online on index page' do
       user = build :user
       user2 = create :user, email: 'testing2@testing.com', user_name: 'testing2'
