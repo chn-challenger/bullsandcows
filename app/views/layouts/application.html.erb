@@ -9,11 +9,16 @@
   <script src="//js.pusher.com/3.0/pusher.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 </head>
-<body>
+
+<body bgcolor="99FF99">
 <%= render "layouts/navbar" %>
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p>
 <div class="container">
+  <div id="footer">
+    <div id="footerContainer">
+    </div>
+  </div>
 <%= yield %>
 </div>
 </body>
