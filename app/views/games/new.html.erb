@@ -4,6 +4,18 @@
     <title>Bulls and Cows</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./style_test.css">
+    <script>
+      $(function() {
+         var pusher = new Pusher('05353e523f10cfd5d040');
+         var channel = pusher.subscribe('game');
+         channel.bind('play_game', function() {
+           location.reload();
+         })
+         channel.bind('end_game', function() {
+           window.location.href = 'http://localhost:3000/games/end';
+         })
+      });
+    </script>
   </head>
   <body>
     <div class="container" style="margin-top:20px">

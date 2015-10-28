@@ -46,7 +46,13 @@ class GamesController < ApplicationController
     else
       $game.player_2.set_secret_number params[:key]
     end
-    redirect_to '/games/set_secret'
+
+    if $game.player_1.secret_number && $game.player_2.secret_number
+      Pusher.trigger("to_game", 'start_game', {})
+      # redirect_to '/games/new'
+    else
+      redirect_to '/games/set_secret'
+    end
     # redirect_to '/games/new'
   end
 
@@ -55,14 +61,17 @@ class GamesController < ApplicationController
 
   def guess
     @result = $game.make_move params[:guess]
-    winner? ? redirect_to('/games/end') : redirect_to('/games/new')
+    if winner?
+      Pusher.trigger('game', 'end_game', {})
+    else
+      Pusher.trigger('game', 'play_game', {})
+    end
   end
 
   def end
     $game = nil
     $users = []
     $invites = {}
-    redirect_to '/'
   end
 
   def accept
