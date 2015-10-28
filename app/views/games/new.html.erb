@@ -23,20 +23,36 @@
       </div>
       <div class="row" style="height:500px;background-color:grey">
         <div class="col-sm-6" style="font-size:150%;background-color:lightblue;height:100%;border-top: solid 5px white;border-right: solid 5px white;border-bottom: solid 5px white">
-          <h3><%= $game.player_1.username %>'s moves</h3>
+          <h3><%= $game.player_1.username %>'s mooooves</h3>
           <% $game.player_1.guesses.each_with_index do |guess, i| %>
-            <%= guess %>
-            <%= $game.player_1.results[i].values[0] %>.times { Hi } %> Bull
-            <%= $game.player_1.results[i].values[1] %> Cow<br/>
+            <section style="float: left;width: 220px; height:33px">
+              <%= guess %>
+            </section>
+            <section style="float: right;width: 220px;">
+              <% $game.player_1.results[i].values[0].to_i.times do %>
+                <%= image_tag "bull.jpg", :size => '30x30' %>
+              <% end %>
+              <% $game.player_1.results[i].values[1].to_i.times do %>
+                <%= image_tag "cow.jpg", :size => '30x30' %>
+              <% end %>
+            </section><br />
           <% end %>
         </div>
         <div class="col-sm-6" style="font-size:150%;background-color:lightpink;height:100%;border-left: solid 5px white;border-top: solid 5px white;border-bottom: solid 5px white">
-          <h3><%= $game.player_2.username %>'s moves</h3>
+          <h3><%= $game.player_2.username %>'s mooooves</h3>
           <% $game.player_2.guesses.each_with_index do |guess, j| %>
+            <section style="float: left;width: 220px; height:33px">
             <%= guess %>
-            <%= $game.player_2.results[j].values[0] %> <%= image_tag "bull.jpg", :size => '30x30' %>
-            <%= $game.player_2.results[j].values[1] %> <%= image_tag "cow.jpg", :size => '30x30' %><br/>
-          <% end %>
+            </section>
+            <section style="float: right;width: 220px;">
+              <% $game.player_2.results[j].values[0].to_i.times do %>
+                <%= image_tag "bull.jpg", :size => '30x30' %>
+              <% end %>
+              <% $game.player_2.results[j].values[1].to_i.times do %>
+                <%= image_tag "cow.jpg", :size => '30x30' %>
+              <% end %>
+            </section><br />
+            <% end %>
         </div>
       </div>
 
