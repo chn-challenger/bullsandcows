@@ -10,13 +10,13 @@
       <div class="row" style="height:110px">
         <div class="col-sm-6" style="height:100%;background-color:lightblue;border-right: solid 5px white;border-bottom: solid 5px white">
           <h2><%= $game.player_1.username %></h2>
-          <% if $game.player_1.username == current_user.user_name %>
+          <% if player_1? %>
             <h4>Secret Number: <%= $game.player_1.secret_number %></h4>
           <% end %>
         </div>
         <div class="col-sm-6" style="height:100%;background-color:lightpink;border-left: solid 5px white;border-bottom: solid 5px white">
           <h2><%= $game.player_2.username %></h2>
-          <% if $game.player_2.username == current_user.user_name %>
+          <% if player_2? %>
             <h4>Secret Number: <%= $game.player_2.secret_number %></h4>
           <% end %>
         </div>

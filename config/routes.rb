@@ -9,5 +9,4 @@ Rails.application.routes.draw do
   post 'games/save_secret' => 'games#save_secret'
   post 'games/guess' => 'games#guess'
   resource :games
-
 end

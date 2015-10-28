@@ -31,7 +31,7 @@ class GamesController < ApplicationController
   end
 
   def save_secret
-    if current_user.user_name == $game.player_1.username
+    if player_1?
       $game.player_1.set_secret_number params[:key]
     else
       $game.player_2.set_secret_number params[:key]
