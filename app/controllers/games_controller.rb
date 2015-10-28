@@ -12,7 +12,6 @@ class GamesController < ApplicationController
     setup_users
     $users << current_user.user_name if new_visitor?
     setup_invites
-    redirect_to '/games/set_secret' if $game
   end
 
   def challenge
@@ -69,9 +68,20 @@ class GamesController < ApplicationController
   end
 
   def end
-    $game = nil
-    $users = []
-    $invites = {}
+    $loaded ||= 0
+    if current_user.user_name == $game.winner
+      $loaded += 1
+      @message = "Congratulations you have won!"
+    else
+      @message = "Bad luck, you have lost!"
+      $loaded += 1
+    end
+    if $loaded >= 2
+      $game = nil
+      $users = []
+      $invites = {}
+      $loaded = 0
+    end
   end
 
   def accept
