@@ -7,6 +7,10 @@ module GamesHelper
     $invites ||= Hash.new
   end
 
+  def setup_loaded
+    $loaded ||= 0
+  end
+
   def new_visitor?
     $users.include?(current_user.user_name) == false
   end

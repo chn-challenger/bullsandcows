@@ -3,8 +3,8 @@ require './lib/bulls_cows/game'
 
 class GamesController < ApplicationController
   include GamesHelper
-  protect_from_forgery except: [:challenge, :save_secret]
-  # before_action :authenticate_user!, except: [:homepage]
+  protect_from_forgery except: [:challenge, :save_secret, :guess]
+  before_action :authenticate_user!, except: [:homepage]
 
   def homepage
   end
@@ -35,28 +35,25 @@ class GamesController < ApplicationController
   end
 
   def set_secret
-    if $game.player_1.username == current_user.user_name
+    if player_1?
       @user_secret = $game.player_1.secret_number
     end
-    if $game.player_2.username == current_user.user_name
+    if player_2?
       @user_secret = $game.player_2.secret_number
     end
   end
 
   def save_secret
-    if $game.player_1.username == current_user.user_name
+    if player_1?
       $game.player_1.set_secret_number params[:key]
     else
       $game.player_2.set_secret_number params[:key]
     end
-
     if $game.player_1.secret_number && $game.player_2.secret_number
       Pusher.trigger("to_game", 'start_game', {})
-      # redirect_to '/games/new'
     else
       redirect_to '/games/set_secret'
     end
-    # redirect_to '/games/new'
   end
 
   def new
@@ -72,7 +69,7 @@ class GamesController < ApplicationController
   end
 
   def end
-    $loaded ||= 0
+    setup_loaded
     if current_user.user_name == $game.winner
       $loaded += 1
       @message = "Congratulations you have won!"
@@ -82,14 +79,12 @@ class GamesController < ApplicationController
     end
     if $loaded >= 2
       $game = nil
-      $users = []
-      $invites = {}
+      $users = Array.new
+      $invites = Hash.new
       $loaded = 0
     end
   end
 
   def accept
-
   end
-
 end
