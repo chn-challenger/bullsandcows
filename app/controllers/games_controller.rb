@@ -10,9 +10,12 @@ class GamesController < ApplicationController
   end
 
   def index
-    setup_users
-    $users << current_user.user_name if new_visitor?
     setup_invites
+    setup_users
+    if new_visitor?
+      $users << current_user.user_name
+      Pusher.trigger("users", 'refresh_users', {})
+    end
   end
 
   def challenge
