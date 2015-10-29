@@ -3,6 +3,7 @@ require './lib/bulls_cows/game'
 
 class GamesController < ApplicationController
   include GamesHelper
+
   protect_from_forgery except: [:challenge, :save_secret]
   skip_before_filter  :verify_authenticity_token
   # before_action :authenticate_user!, except: [:homepage]
@@ -101,6 +102,7 @@ class GamesController < ApplicationController
     session[:game_id] = nil
   end
 
+
   # def accept
   #
   # end
@@ -118,5 +120,6 @@ class GamesController < ApplicationController
   # def test2
   #   # @view = session[:smessage]
   # end
+
 
 end
