@@ -1,0 +1,14 @@
+<%= image_tag "title.jpg" %><%= image_tag "bull.jpg", :size=> '60x60', :style => "float: right; margin: 0px 170px 0px 30px" %><%= image_tag "cow.jpg", :size=> '60x60', :style => "float: right" %>
+
+<h1> <font color="#256EB8">The Rules</font> </h1>
+<p>Bulls and cows is a two player code-breaking game similar to the board game Mastermind. Players choose a secret 4 digit number, the<br>
+    digits must all be different. Then, in turn, players will attempt to guess their opponent's number. If any digits guessed are in the<br>
+    correct position, they are "bulls", if in a different position, they are "cows". For example:</p><br>
+    <ul>
+      <li>Secret number: 4271</li>
+      <li>Opponent's attempt: 1234</li>
+      <li>Result: 1 bull and 2 cows, the bull is "1" and cows are "4" and "1"</li>
+    </ul><br>
+<p>The first one to reveal the other's secret number wins the game.</p>
+
+<h3><%= link_to 'Enter game', '/games/index' %></h3>

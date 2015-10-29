@@ -16,6 +16,9 @@
           <li>
             <%= link_to "Logout", destroy_user_session_path, method: :delete %>
           </li>
+          <li>
+            <%= link_to "#{current_user.user_name}", root_path%>
+          </li>
         <% else %>
           <li>
             <%= link_to "Login", new_user_session_path %>

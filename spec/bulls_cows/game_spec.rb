@@ -2,8 +2,8 @@ require './lib/bulls_cows/game'
 
 describe Game do
 
-  let(:player1)  { double(:player1, secret_number: 4321) }
-  let(:player2)  { double(:player2, secret_number: 1234) }
+  let(:player1)  { double(:player1, secret_number: 4321, add_guess: true, add_result: true, username: true) }
+  let(:player2)  { double(:player2, secret_number: 1234, add_guess: true, add_result: true, username: true) }
   let(:game)     { described_class.new(player1, player2) }
 
   context 'Game starts' do
