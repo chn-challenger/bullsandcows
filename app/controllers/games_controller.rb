@@ -4,6 +4,7 @@ require './lib/bulls_cows/game'
 class GamesController < ApplicationController
   include GamesHelper
   protect_from_forgery except: [:challenge, :save_secret]
+  skip_before_filter  :verify_authenticity_token
   # before_action :authenticate_user!, except: [:homepage]
 
   def homepage
@@ -19,43 +20,59 @@ class GamesController < ApplicationController
   end
 
   def challenge
-    $invites[params[:challengee]] = current_user.user_name
+    session[:challengee] = params[:challengee]
     redirect_to '/games/index'
     @user = User.find_by(user_name: params[:challengee])
-    Pusher.trigger("user_#{@user.id}_channel", 'challenge', {challenger: current_user, challengee: @user})
+    Pusher.trigger("user_#{@user.user_name}_channel", 'challenge', {challenger: current_user.user_name, challengee: params[:challengee]})
+  end
+
+  def waiting
+    @challengee = session[:challengee]
   end
 
   def accept_challenge
-    player_1 = Player.new $invites[current_user.user_name]
-    player_2 = Player.new current_user.user_name
-    $game = Game.new player_1, player_2
-    redirect_to '/games/set_secret'
-    @user = User.find_by(user_name: player_1.username)
-    Pusher.trigger("user_#{@user.id}_channel", 'secret', {})
+    record = Bullsandcowsgame.new
+    game = Game.new(Player.new(params[:challenger]),Player.new(params[:challengee]))
+    record.state = game
+    record.save
+    @game_id = record.id
+    redirect_to "/games/set_secret?game_id=#{@game_id}"
+    Pusher.trigger("user_#{params[:challenger]}_channel", 'secret', {game_id: @game_id})
   end
 
   def set_secret
-    if $game.player_1.username == current_user.user_name
-      @user_secret = $game.player_1.secret_number
-    end
-    if $game.player_2.username == current_user.user_name
-      @user_secret = $game.player_2.secret_number
-    end
+    #on this page with the box to set secret
+    # if $game.player_1.username == current_user.user_name
+    #   @user_secret = $game.player_1.secret_number
+    # end
+    # if $game.player_2.username == current_user.user_name
+    #   @user_secret = $game.player_2.secret_number
+    # end
   end
 
   def save_secret
-    if $game.player_1.username == current_user.user_name
-      $game.player_1.set_secret_number params[:key]
-    else
-      $game.player_2.set_secret_number params[:key]
+    record = Bullsandcowsgame.find(params[:game_id])
+    current_game = record.state
+
+    if current_game.player_1.username == current_user.user_name
+        current_game.player_1.set_secret_number params[:key]
+    end
+    if current_game.player_2.username == current_user.user_name
+        current_game.player_2.set_secret_number params[:key]
     end
 
-    if $game.player_1.secret_number && $game.player_2.secret_number
-      Pusher.trigger("to_game", 'start_game', {})
-      # redirect_to '/games/new'
-    else
-      redirect_to '/games/set_secret'
-    end
+    record.state = current_game
+    record.save
+
+    @ready = true
+
+    redirect_to '/games/set_secret'
+    # if current_game.player_1.secret_number && current_game.player_2.secret_number
+    #   Pusher.trigger("to_game", 'start_game', {})
+    #   # redirect_to '/games/new'
+    # else
+    #   redirect_to '/games/set_secret'
+    # end
     # redirect_to '/games/new'
   end
 
@@ -93,7 +110,8 @@ class GamesController < ApplicationController
   end
 
   def test
-    Lobbyuser.create(username: "joe123")
+    @view = params[:name]
+    # Lobbyuser.create(username: "joe123")
     # Lobbyuser.create(username: "helloworld")
     # @view = Lobbyuser.find(1).username
     # @user = Lobbyuser.find_by username: 'Joe123'

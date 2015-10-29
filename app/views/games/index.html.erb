@@ -1,12 +1,12 @@
 <script>
  $(function() {
    var pusher = new Pusher('05353e523f10cfd5d040');
-   var channel = pusher.subscribe('user_<%= current_user.id %>_channel');
-   channel.bind('challenge', function(data) {
-    location.reload();
+   var channel = pusher.subscribe('user_<%= current_user.user_name %>_channel');
+   channel.bind('challenge', function(player_data) {
+    window.location.href = "http://localhost:3000/games/index?challenger="+player_data.challenger
    })
-   channel.bind('secret', function() {
-     window.location.href = "http://localhost:3000/games/set_secret"
+   channel.bind('secret', function(data) {
+     window.location.href = "http://localhost:3000/games/set_secret?game_id=" + data.game_id
    })
    var users_channel = pusher.subscribe("users");
     users_channel.bind('refresh_users', function(data) {
@@ -15,7 +15,7 @@
  });
 </script>
 
-<% if session[:challenged_user] == nil %>
+<% if params[:challenger] == nil %>
   Other users currently in the lobby:
   <ol>
     <% @lobbyusers.each do |lobbyuser| %>
@@ -32,6 +32,6 @@
   </form>
 
 <% else %>
-  <p><strong><em><%= hello %></em></strong> has challenged you to play a game. Would you accept?</p>
-  <%= button_to 'Accept challenge', '/games/accept_challenge', method: :post %>
+  <p><strong><em><%= params[:challenger] %></em></strong> has challenged you to play a game. Would you accept?</p>
+  <%= button_to 'Accept challenge', "/games/accept_challenge?challenger=#{params[:challenger]}&challengee=#{current_user.user_name}", method: :post %>
 <% end %>

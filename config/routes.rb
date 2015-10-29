@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get 'games/end' => 'games#end'
   resource :games
 
+
+  get 'games/waiting' => 'games#waiting'
   get '/accept' => 'games#accept'
   get '/test' => 'games#test'
   get '/test1' => 'games#test1'
