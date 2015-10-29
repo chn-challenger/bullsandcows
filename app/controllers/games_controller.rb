@@ -20,10 +20,9 @@ class GamesController < ApplicationController
   end
 
   def challenge
-    session[:challengee] = params[:challengee]
-    redirect_to '/games/index'
-    @user = User.find_by(user_name: params[:challengee])
-    Pusher.trigger("user_#{@user.user_name}_channel", 'challenge', {challenger: current_user.user_name, challengee: params[:challengee]})
+    Lobbyuser.find_by(username: current_user.user_name).destroy
+    redirect_to '/games/waiting'
+    Pusher.trigger("user_#{params[:challengee]}_channel", 'challenge', {challenger: current_user.user_name, challengee: params[:challengee]})
   end
 
   def waiting
@@ -31,6 +30,7 @@ class GamesController < ApplicationController
   end
 
   def accept_challenge
+    Lobbyuser.find_by(username: current_user.user_name).destroy
     record = Bullsandcowsgame.new
     game = Game.new(Player.new(params[:challenger]),Player.new(params[:challengee]))
     record.state = game
@@ -101,22 +101,22 @@ class GamesController < ApplicationController
     session[:game_id] = nil
   end
 
-  def accept
+  # def accept
+  #
+  # end
 
-  end
-
-  def test
-    @view = session[:game_id]
-    end
-
-  def test1
-    if Lobbyuser.find_by(username: current_user.user_name)
-      @view = "YES YES YES"
-    end
-  end
-
-  def test2
-    # @view = session[:smessage]
-  end
+  # def test
+  #   @view = session[:game_id]
+  #   end
+  #
+  # def test1
+  #   if Lobbyuser.find_by(username: current_user.user_name)
+  #     @view = "YES YES YES"
+  #   end
+  # end
+  #
+  # def test2
+  #   # @view = session[:smessage]
+  # end
 
 end

@@ -15,7 +15,7 @@
  });
 </script>
 
-<% if params[:challenger] == nil %>
+<% if params[:ready] == nil && params[:challenger] == nil%>
   Other users currently in the lobby:
   <ol>
     <% @lobbyusers.each do |lobbyuser| %>
@@ -30,8 +30,9 @@
     <input id="challengee" type='text' name='challengee'>
     <input id="send_challengee" type='submit' value='Send challenge'>
   </form>
-
-<% else %>
+<% elsif params[:challenger] %>
   <p><strong><em><%= params[:challenger] %></em></strong> has challenged you to play a game. Would you accept?</p>
   <%= button_to 'Accept challenge', "/games/accept_challenge?challenger=#{params[:challenger]}&challengee=#{current_user.user_name}", method: :post %>
+<% else %>
+  <p>You must wait for your challenge to be accepted... </p>
 <% end %>
