@@ -7,8 +7,8 @@
     <script>
       $(function() {
          var pusher = new Pusher('05353e523f10cfd5d040');
-         var channel = pusher.subscribe('game');
-         channel.bind('play_game', function() {
+         var channel = pusher.subscribe('<%= current_user.user_name %>_game');
+         channel.bind('play', function() {
            location.reload();
          })
          channel.bind('end_game', function() {

@@ -74,29 +74,31 @@ class GamesController < ApplicationController
   end
 
   def guess
-    @result = $game.make_move params[:guess]
-    if winner?
-      Pusher.trigger('game', 'end_game', {})
+    record = Bullsandcowsgame.find(session[:game_id])
+    current_game = record.state
+    @result = current_game.make_move params[:guess]
+    record.state = current_game
+    record.save
+    @player1 = current_game.player_1.username
+    @player2 = current_game.player_2.username
+    if current_game.winner
+      Pusher.trigger("#{@player1}_game", 'end_game', {})
+      Pusher.trigger("#{@player2}_game", 'end_game', {})
     else
-      Pusher.trigger('game', 'play_game', {})
+      Pusher.trigger("#{@player1}_game", 'play', {})
+      Pusher.trigger("#{@player2}_game", 'play', {})
     end
   end
 
   def end
-    $loaded ||= 0
-    if current_user.user_name == $game.winner
-      $loaded += 1
+    record = Bullsandcowsgame.find(session[:game_id])
+    current_game = record.state
+    if current_user.user_name == current_game.winner
       @message = "Congratulations you have won!"
     else
       @message = "Bad luck, you have lost!"
-      $loaded += 1
     end
-    if $loaded >= 2
-      $game = nil
-      $users = []
-      $invites = {}
-      $loaded = 0
-    end
+    session[:game_id] = nil
   end
 
   def accept
@@ -105,39 +107,11 @@ class GamesController < ApplicationController
 
   def test
     @view = session[:game_id]
-    # Lobbyuser.create(username: "joe123")
-    # Lobbyuser.create(username: "helloworld")
-    # @view = Lobbyuser.find(1).username
-    # @user = Lobbyuser.find_by username: 'Joe123'
-
-    # @class = @view.class
-    # test1 = Bullsandcowsgame.new
-    # game = Game.new(Player.new('Joe'),Player.new('Jongmin'))
-    # game.player_1.set_secret_number 1234
-    # test1.state = game
-    # test1.save
-
-    # current_game = Bullsandcowsgame.find(1).state
-    # @view = current_game.class.to_s
-    # current_game.player_1.set_secret_number 1234
-    # current_game.player_2.set_secret_number 4567
-    # current_game.make_move(4762)
-    # current_game.make_move(1236)
-    # current_game.make_move(1298)
-    # update_game = Bullsandcowsgame.find(1)
-    # update_game.state = current_game
-    # update_game.save
-    # view_game = Bullsandcowsgame.find(1).state
-    # @view = Bullsandcowsgame.find(1).state.player_1.results
-    # Bullsandcowsgame.find(1).state.player_1.set_secret_number 1234
-    # session[:smessage] = "We love Ruby!"
-  end
+    end
 
   def test1
     if Lobbyuser.find_by(username: current_user.user_name)
       @view = "YES YES YES"
-      # session[:current_users] << current_user.user_name
-      # Pusher.trigger("users", 'refresh_users', {})
     end
   end
 
