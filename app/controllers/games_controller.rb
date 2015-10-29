@@ -41,13 +41,7 @@ class GamesController < ApplicationController
   end
 
   def set_secret
-    #on this page with the box to set secret
-    # if $game.player_1.username == current_user.user_name
-    #   @user_secret = $game.player_1.secret_number
-    # end
-    # if $game.player_2.username == current_user.user_name
-    #   @user_secret = $game.player_2.secret_number
-    # end
+    session[:game_id] = params[:game_id] if params[:game_id]
   end
 
   def save_secret
@@ -64,19 +58,19 @@ class GamesController < ApplicationController
     record.state = current_game
     record.save
 
-    @ready = true
-
-    redirect_to '/games/set_secret'
-    # if current_game.player_1.secret_number && current_game.player_2.secret_number
-    #   Pusher.trigger("to_game", 'start_game', {})
-    #   # redirect_to '/games/new'
-    # else
-    #   redirect_to '/games/set_secret'
-    # end
-    # redirect_to '/games/new'
+    if current_game.player_1.secret_number && current_game.player_2.secret_number
+      @player1 = current_game.player_1.username
+      @player2 = current_game.player_2.username
+      Pusher.trigger("#{@player1}", 'start_game', {})
+      Pusher.trigger("#{@player2}", 'start_game', {})
+    else
+      redirect_to '/games/set_secret?ready=true'
+    end
   end
 
   def new
+    record = Bullsandcowsgame.find(session[:game_id])
+    @game = record.state
   end
 
   def guess
@@ -110,7 +104,7 @@ class GamesController < ApplicationController
   end
 
   def test
-    @view = params[:name]
+    @view = session[:game_id]
     # Lobbyuser.create(username: "joe123")
     # Lobbyuser.create(username: "helloworld")
     # @view = Lobbyuser.find(1).username
